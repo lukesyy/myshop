@@ -1,0 +1,163 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "6999",
+      "name": "用户",
+      "font_class": "yonghu",
+      "unicode": "3461",
+      "unicode_decimal": 13409
+    },
+    {
+      "icon_id": "93355",
+      "name": "锁",
+      "font_class": "suoding",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "4400328",
+      "name": "报表",
+      "font_class": "baobiao",
+      "unicode": "e649",
+      "unicode_decimal": 58953
+    },
+    {
+      "icon_id": "5263886",
+      "name": "眼睛",
+      "font_class": "yanjing",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "6525513",
+      "name": "报表",
+      "font_class": "ziyuan",
+      "unicode": "e7dc",
+      "unicode_decimal": 59356
+    },
+    {
+      "icon_id": "7635259",
+      "name": "单据",
+      "font_class": "danju",
+      "unicode": "e6b8",
+      "unicode_decimal": 59064
+    },
+    {
+      "icon_id": "8202083",
+      "name": "锁",
+      "font_class": "suo",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    },
+    {
+      "icon_id": "9652339",
+      "name": "头像",
+      "font_class": "touxiang",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "10032629",
+      "name": "报表",
+      "font_class": "baobiao1",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "10110858",
+      "name": "报表",
+      "font_class": "baobiao2",
+      "unicode": "e6c5",
+      "unicode_decimal": 59077
+    },
+    {
+      "icon_id": "10128208",
+      "name": "锁",
+      "font_class": "suo1",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "10575871",
+      "name": "锁",
+      "font_class": "suo2",
+      "unicode": "e685",
+      "unicode_decimal": 59013
+    },
+    {
+      "icon_id": "11007350",
+      "name": "锁",
+      "font_class": "suo3",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "12079931",
+      "name": "眼睛",
+      "font_class": "yanjing1",
+      "unicode": "e709",
+      "unicode_decimal": 59145
+    },
+    {
+      "icon_id": "12201122",
+      "name": "多用户",
+      "font_class": "duoyonghu",
+      "unicode": "e736",
+      "unicode_decimal": 59190
+    },
+    {
+      "icon_id": "12849841",
+      "name": "眼睛",
+      "font_class": "weibiaoti-",
+      "unicode": "e6f3",
+      "unicode_decimal": 59123
+    },
+    {
+      "icon_id": "13436139",
+      "name": "头像",
+      "font_class": "touxiang1",
+      "unicode": "e6ba",
+      "unicode_decimal": 59066
+    },
+    {
+      "icon_id": "13772370",
+      "name": "锁",
+      "font_class": "icon-test",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "14804769",
+      "name": "体积",
+      "font_class": "tiji",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "15365686",
+      "name": "报表",
+      "font_class": "baobiao3",
+      "unicode": "e73b",
+      "unicode_decimal": 59195
+    },
+    {
+      "icon_id": "16307834",
+      "name": "商品",
+      "font_class": "shangpin",
+      "unicode": "e977",
+      "unicode_decimal": 59767
+    },
+    {
+      "icon_id": "18623663",
+      "name": "头 像 ",
+      "font_class": "touxiang2",
+      "unicode": "e50c",
+      "unicode_decimal": 58636
+    }
+  ]
+}
