@@ -6,6 +6,7 @@ Vue.use(Router)
 
   const login =()=> import('../components/login.vue')  
   const home=()=> import('../components/home.vue')  
+  const users=()=> import('../components/users/users.vue')  
 
  const router = new Router({
   routes: [
@@ -26,6 +27,10 @@ Vue.use(Router)
           component:home
         },
         {
+          path: 'users',
+          component:users
+        },
+        {
           path: '',
           redirect:'home'
         }
@@ -36,7 +41,7 @@ Vue.use(Router)
  })
 
 router.beforeEach((to, from, next) => {
-  console.log(to);
+  
   let token =  sessionStorage.getItem('token')
    if (to.path=='/'||to.path=='/login') {
      if (token) {
