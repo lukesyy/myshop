@@ -53,7 +53,7 @@
             <el-button
               type="primary"
               icon="el-icon-edit"
-              @click="Edit(scope.row)"
+              @click="Edit(scope.row.id)"
               size="mini"
             ></el-button>
 
@@ -92,9 +92,14 @@
       >
       </el-pagination>
     </el-card>
+
     <!-- 添加用户对话框 -->
-    <el-dialog title="更改用户信息" :visible.sync="dialogFormVisible">
-      <el-form :model="addForm" :rules="addFormRules">
+    <el-dialog
+      title="添加用户"
+      :visible.sync="dialogFormVisible"
+      @close="addClose"
+    >
+      <el-form :model="addForm" :rules="addFormRules" ref="addFromRef">
         <el-form-item
           label="用户名"
           :label-width="formLabelWidth"
@@ -122,11 +127,47 @@
         <el-button type="primary" @click="addUser">确 定</el-button>
       </div>
     </el-dialog>
+
+    <!-- 修改用户对话框 -->
+    <el-dialog
+      title="修改用户"
+      :visible.sync="setUserVisible"
+      @close="setClose"
+    >
+      <el-form :model="setForm" :rules="addFormRules" ref="setFromRef">
+        <el-form-item label="用户名" :label-width="formLabelWidth">
+          <el-input
+            v-model="setForm.username"
+            autocomplete="off"
+            disabled
+          ></el-input>
+        </el-form-item>
+
+        <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
+          <el-input v-model="setForm.email" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" :label-width="formLabelWidth" prop="mobile">
+          <el-input v-model="setForm.mobile" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 对话窗底部 -->
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="setUserVisible = false">取 消</el-button>
+        <el-button type="primary" @click="setUser">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { usersList, setType, addUserList } from "../../util/request";
+import {
+  usersList,
+  setType,
+  addUserList,
+  DeleteUser,
+  getUserOne,
+  setUser,
+} from "../../util/request";
 export default {
   data() {
     return {
@@ -138,7 +179,8 @@ export default {
       },
       usersList: [], //请求回来的列表数据
       total: 0, //总页数
-      dialogFormVisible: false, //添加弹框的值
+      dialogFormVisible: false, //控制添加弹框的显示与隐藏
+      setUserVisible: false, //控制修改弹框的显示与隐藏
       //进行添加用户的数据
       addForm: {
         username: "",
@@ -196,16 +238,92 @@ export default {
           },
         ],
       },
+      //修改用户的提交数据
+      setForm: {},
       formLabelWidth: "120px",
     };
   },
   methods: {
-    Edit(row) {},
-    Delete(row) {},
-    // 监听 pagesize
-    handleSizeChange(newSize) {},
+    //修改用户的弹框
+    Edit(id) {
+      getUserOne(id).then((res) => {
+        if (res.data.meta.status != 200) {
+          this.$message.error("查询用户信息失败!");
+          return;
+        }
+        this.setForm = res.data.data;
+      });
+      this.setUserVisible = true; //控制修改弹框的显示与隐藏
+    },
+    //提交修改
+    setUser() {
+      this.$refs.setFromRef.validate((valid) => {
+        //valid是一个 布尔值
+        if (!valid) {
+          this.$message.error("请合法填入信息");
+          return
+        } 
+         let {id,email,mobile} = this.setForm
+           setUser(id,email,mobile).then((res) => {
+
+              if (res.data.meta.status != 200) {
+              this.$message.error("添加失败");
+              return
+            } 
+            
+               this.$message.success(res.data.meta.msg);
+              //成功后重新获取列表
+              this.getUserList();
+            this.setUserVisible=false
+          });
+        
+      });
+    },
+    //删除用户
+    Delete(row) {
+
+        this.$confirm(`确定删除用户 ${row.username} 的信息吗?`, "提示", {
+          confirmButtonText: "删除",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+          .then(() => {
+            
+ DeleteUser(row.id).then((res) => {
+       
+        if (res.data.meta.status != 200) {
+         this.$message.error(res.data.meta.msg);
+         return
+        }
+          this.$message.success(res.data.meta.msg);
+          this.getUserList();
+        
+      });
+
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "取消删除",
+            });
+          });
+      
+    
+
+      
+     
+    },
+    // 监听 每页多少条
+    handleSizeChange(newSize) {
+      this.params.pagesize = newSize;
+
+      this.getUserList();
+    },
     //监听页码值改变
-    handleCurrentChange(newPage) {},
+    handleCurrentChange(newPage) {
+      this.params.pagenum = newPage;
+      this.getUserList();
+    },
     //监听状态改变
     userState(row) {
       setType(row.id, row.mg_state).then((res) => {
@@ -218,6 +336,16 @@ export default {
         }
       });
     },
+    //监听添加用户对话框的关闭事件
+    addClose() {
+      //关闭对话框后把内容清空
+      this.$refs.addFromRef.resetFields();
+    },
+    //监听修改对话框的关闭事件
+    setClose() {
+      //关闭对话框后把内容清空
+      this.$refs.setFromRef.resetFields();
+    },
     //发送获取用户列表的请求
     getUserList() {
       usersList(this.params).then((res) => {
@@ -227,14 +355,25 @@ export default {
     },
     //添加用户提交
     addUser() {
-      addUserList(this.addForm).then((res) => {
-        if (res.data.meta.status == 201) {
-          this.$message.success(res.data.meta.msg);
+      //验证整个表单
+      this.$refs.addFromRef.validate((valid) => {
+        //valid是一个 布尔值
+        if (valid) {
+          addUserList(this.addForm).then((res) => {
+            if (res.data.meta.status == 201) {
+              this.$message.success(res.data.meta.msg);
+              //成功后重新获取列表
+              this.getUserList();
+            } else {
+              this.$message.error("添加失败");
+            }
+          });
+          //关闭对话框
+          this.dialogFormVisible = false;
         } else {
-          this.$message.error("添加失败");
+          this.$message.error("请合法填入信息");
         }
       });
-      this.dialogFormVisible = false;
     },
   },
   mounted() {

@@ -4,6 +4,7 @@
 import axios from 'axios'
 
 const baseUrl = ''
+//---------------设置请求头----------------------------
 axios.defaults.baseURL = 'https://www.liulongbin.top:8888/api/private/v1/'
 
 
@@ -52,9 +53,9 @@ export const usersList = async (data) => {
     })
 }
 
+
+
 //修改状态
-
-
 
 export const setType = async (id,type) => {
     return await axios({
@@ -73,5 +74,35 @@ export const addUserList = async (data) => {
         url:'/users',
         method: 'post',
       data:data
+    })
+}
+
+//删除用户
+export const DeleteUser = async (id) => {
+    return await axios({
+        url: `/users/${id}`,
+        method: 'delete',
+      
+    })
+}
+//获取一条用户信息
+export const getUserOne = async (id) => {
+    return await axios({
+        url: `/users/${id}`,
+        method: 'get',
+        
+      
+    })
+}
+//修改用户信息
+
+export const setUser = async (id,email,mobile) => {
+    return await axios({
+        url: `/users/${id}`,
+        method: 'put',
+        data: {
+            email,
+            mobile
+      }
     })
 }

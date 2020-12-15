@@ -11,13 +11,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api':{
-        target:'http://timemeetyou.com:8889/api/private/v1/',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/api':'http://timemeetyou.com:8889/api/private/v1/'
-        }
-      }},
+     },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
