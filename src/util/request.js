@@ -106,3 +106,16 @@ export const setUser = async (id,email,mobile) => {
       }
     })
 }
+
+
+//============================权限管理=============================
+
+
+//所有权限列表
+export const rightsList = async (type) => {
+    return await axios({
+        url: `/rights/${type}`,
+        method: 'get',
+     
+    })
+}
