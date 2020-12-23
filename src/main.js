@@ -12,6 +12,10 @@ import '../src/assets/css/reset.css'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
+//引入树形表格插件
+import TreeTable from 'vue-table-with-tree-grid'
+Vue.component('tree-table', TreeTable)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

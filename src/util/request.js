@@ -27,8 +27,8 @@ axios.interceptors.response.use(res=>{
 
 
 //管理员登录 
-export const postlogin=async(data)=>{
-   return await axios({
+export const postlogin=(data)=>{
+   return  axios({
         url:baseUrl+'/login',
         method:'post',
         data:data
@@ -36,8 +36,8 @@ export const postlogin=async(data)=>{
 }
 //===============================左侧菜单===================================
 
-export const LeftMenus = async () => {
-    return await axios({
+export const LeftMenus =  () => {
+    return  axios({
         url: '/menus',
         method:'get'
     })
@@ -45,8 +45,8 @@ export const LeftMenus = async () => {
 //===============================用户列表===================================
 
 //获取列表
-export const usersList = async (data) => {
-    return await axios({
+export const usersList =  (data) => {
+    return  axios({
         url: '/users',
         method: 'get',
         params:data
@@ -57,8 +57,8 @@ export const usersList = async (data) => {
 
 //修改状态
 
-export const setType = async (id,type) => {
-    return await axios({
+export const setType =  (id,type) => {
+    return  axios({
         url: `/users/${id}/state/${type}`,
         method: 'put',
       
@@ -69,8 +69,8 @@ export const setType = async (id,type) => {
 
 //添加用户
 
-export const addUserList = async (data) => {
-    return await axios({
+export const addUserList =  (data) => {
+    return  axios({
         url:'/users',
         method: 'post',
       data:data
@@ -78,16 +78,16 @@ export const addUserList = async (data) => {
 }
 
 //删除用户
-export const DeleteUser = async (id) => {
-    return await axios({
+export const DeleteUser =  (id) => {
+    return  axios({
         url: `/users/${id}`,
         method: 'delete',
       
     })
 }
 //获取一条用户信息
-export const getUserOne = async (id) => {
-    return await axios({
+export const getUserOne =  (id) => {
+    return  axios({
         url: `/users/${id}`,
         method: 'get',
         
@@ -96,8 +96,8 @@ export const getUserOne = async (id) => {
 }
 //修改用户信息
 
-export const setUser = async (id,email,mobile) => {
-    return await axios({
+export const setUser =  (id,email,mobile) => {
+    return  axios({
         url: `/users/${id}`,
         method: 'put',
         data: {
@@ -107,8 +107,8 @@ export const setUser = async (id,email,mobile) => {
     })
 }
 //分配新角色
-export const setUserRole = async (id,rid) => {
-    return await axios({
+export const setUserRole =  (id,rid) => {
+    return  axios({
         url: `/users/${id}/role`,
         method: 'put',
         data: {
@@ -121,8 +121,8 @@ export const setUserRole = async (id,rid) => {
 
 
 //所有权限列表
-export const rightsList = async (type) => {
-    return await axios({
+export const rightsList =  (type) => {
+    return  axios({
         url: `/rights/${type}`,
         method: 'get',
      
@@ -139,8 +139,8 @@ export const rolesList = () => {
     })
 }
 //删除角色
-export const DeleteRoles = async (id) => {
-    return await axios({
+export const DeleteRoles =  (id) => {
+    return  axios({
         url: `/roles/${id}`,
         method: 'delete',
       
@@ -151,8 +151,8 @@ export const DeleteRoles = async (id) => {
 
 
 //获取一条用户信息
-export const getRoleOne = async (id) => {
-    return await axios({
+export const getRoleOne =  (id) => {
+    return  axios({
         url: `/roles/${id}`,
         method: 'get',
         
@@ -161,8 +161,8 @@ export const getRoleOne = async (id) => {
 }
 
 //删除权限
-export const DeleteRights = async (roleId,rightId) => {
-    return await axios({
+export const DeleteRights =  (roleId,rightId) => {
+    return  axios({
         url: `/roles/${roleId}/rights/${rightId}`,
         method: 'delete',
         
@@ -170,8 +170,8 @@ export const DeleteRights = async (roleId,rightId) => {
 }
 //添加角色
 
-export const addRoleList = async (data) => {
-    return await axios({
+export const addRoleList =  (data) => {
+    return  axios({
         url:'/roles',
         method: 'post',
       data:data
@@ -180,8 +180,8 @@ export const addRoleList = async (data) => {
 
 //修改角色信息
 
-export const setroles = async (roleId,roleDesc,roleName) => {
-    return await axios({
+export const setroles =  (roleId,roleDesc,roleName) => {
+    return  axios({
         url: `/roles/${roleId}`,
         method: 'put',
         data: {
@@ -193,10 +193,20 @@ export const setroles = async (roleId,roleDesc,roleName) => {
 }
 //分配权限
 
-export const setRights = async (roleId,data) => {
-    return await axios({
+export const setRights =  (roleId,data) => {
+    return  axios({
         url:`roles/${roleId}/rights`,
         method: 'post',
       data:{rids:data}
+    })
+}
+//===========================商品================================
+//商品分类列表
+
+export const categoriesList = (data) => {
+    return axios({
+        url: '/categories',
+        method: 'get',
+        params:data
     })
 }

@@ -9,6 +9,7 @@ Vue.use(Router)
   const users=()=> import('../components/users/users.vue')  
   const rights=()=> import('../components/power/rights.vue')  
   const roles=()=> import('../components/power/roles.vue')  
+  const cate=()=> import('../components/goods/cate.vue')  
 
  const router = new Router({
   routes: [
@@ -39,6 +40,10 @@ Vue.use(Router)
         {
           path: 'roles',
           component:roles
+        },
+        {
+          path: 'categories',
+          component:cate
         },
         {
           path: '',
