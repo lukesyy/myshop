@@ -131,7 +131,7 @@
     <!-- 修改用户对话框 -->
     <el-dialog
       title="修改用户"
-      :visible.sync="setUserVisible  "
+      :visible.sync="setUserVisible"
       @close="setUserClose"
     >
       <el-form :model="setForm" :rules="addFormRules" ref="setFromRef">
@@ -157,7 +157,6 @@
       </div>
     </el-dialog>
 
-
     <!-- 分配角色的对话框 -->
 
     <el-dialog
@@ -180,12 +179,16 @@
             disabled
           ></el-input>
         </el-form-item>
-  <el-form-item label="分配新角色:"  :label-width="formLabelWidth">
-    <el-select v-model="Rid" placeholder="请选择角色">
-      <el-option :label="item.roleName" :value="item.id" v-for="item in getRoleList" :key="item.id"></el-option>
-     
-    </el-select>
-  </el-form-item>
+        <el-form-item label="分配新角色:" :label-width="formLabelWidth">
+          <el-select v-model="Rid" placeholder="请选择角色">
+            <el-option
+              :label="item.roleName"
+              :value="item.id"
+              v-for="item in getRoleList"
+              :key="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <!-- 对话窗底部 -->
       <div slot="footer" class="dialog-footer">
@@ -205,7 +208,7 @@ import {
   getUserOne,
   setUser,
   setUserRole,
-  rolesList
+  rolesList,
 } from "../../util/request";
 export default {
   data() {
@@ -220,11 +223,11 @@ export default {
       total: 0, //总页数
       dialogFormVisible: false, //控制添加弹框的显示与隐藏
       setUserVisible: false, //控制修改弹框的显示与隐藏
-      setRoleVisible:false,//控制分配角色弹框的显示与隐藏
+      setRoleVisible: false, //控制分配角色弹框的显示与隐藏
       //角色的列表
-      getRoleList:[],
+      getRoleList: [],
       //角色的ID
-      Rid:null,
+      Rid: null,
       //进行添加用户的数据
       addForm: {
         username: "",
@@ -285,7 +288,7 @@ export default {
       //修改用户的提交数据
       setForm: {},
       //分配角色的提交数据
-setRoleList:{},
+      setRoleList: {},
       formLabelWidth: "120px",
     };
   },
@@ -307,57 +310,45 @@ setRoleList:{},
         //valid是一个 布尔值
         if (!valid) {
           this.$message.error("请合法填入信息");
-          return
-        } 
-         let {id,email,mobile} = this.setForm
-           setUser(id,email,mobile).then((res) => {
+          return;
+        }
+        let { id, email, mobile } = this.setForm;
+        setUser(id, email, mobile).then((res) => {
+          if (res.data.meta.status != 200) {
+            this.$message.error("添加失败");
+            return;
+          }
 
-              if (res.data.meta.status != 200) {
-              this.$message.error("添加失败");
-              return
-            } 
-            
-               this.$message.success(res.data.meta.msg);
-              //成功后重新获取列表
-              this.getUserList();
-            this.setUserVisible=false
-          });
-        
+          this.$message.success(res.data.meta.msg);
+          //成功后重新获取列表
+          this.getUserList();
+          this.setUserVisible = false;
+        });
       });
     },
     //删除用户
     Delete(row) {
-
-        this.$confirm(`确定删除用户 ${row.username} 的信息吗?`, "提示", {
-          confirmButtonText: "删除",
-          cancelButtonText: "取消",
-          type: "warning",
-        })
-          .then(() => {
-            
- DeleteUser(row.id).then((res) => {
-       
-        if (res.data.meta.status != 200) {
-         this.$message.error(res.data.meta.msg);
-         return
-        }
-          this.$message.success(res.data.meta.msg);
-          this.getUserList();
-        
-      });
-
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "取消删除",
-            });
+      this.$confirm(`确定删除用户 ${row.username} 的信息吗?`, "提示", {
+        confirmButtonText: "删除",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          DeleteUser(row.id).then((res) => {
+            if (res.data.meta.status != 200) {
+              this.$message.error(res.data.meta.msg);
+              return;
+            }
+            this.$message.success(res.data.meta.msg);
+            this.getUserList();
           });
-      
-    
-
-      
-     
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消删除",
+          });
+        });
     },
     // 监听 每页多少条
     handleSizeChange(newSize) {
@@ -393,9 +384,9 @@ setRoleList:{},
       this.$refs.setFromRef.resetFields();
     },
     //监听分配角色对话框关闭事件
-    setRoleClose(){
- //关闭对话框后把内容清空
-    this.Rid = null
+    setRoleClose() {
+      //关闭对话框后把内容清空
+      this.Rid = null;
     },
     //发送获取用户列表的请求
     getUserList() {
@@ -427,37 +418,36 @@ setRoleList:{},
       });
     },
     //打开分配角色的按钮
-    setRole(row){
-rolesList().then(res=>{
+    setRole(row) {
+      rolesList().then((res) => {
+        if (res.data.meta.status == 200) {
+          this.$message.success(res.data.meta.msg);
 
-   if (res.data.meta.status == 200) {
-              this.$message.success(res.data.meta.msg);
+          this.getRoleList = res.data.data;
 
-               this.getRoleList = res.data.data
-          
-              //成功后重新获取列表
-              this.getUserList();
-            } else {
-              this.$message.error("获取角色列表失败");
-            }
-})
+          //成功后重新获取列表
+          this.getUserList();
+        } else {
+          this.$message.error("获取角色列表失败");
+        }
+      });
 
-      this.setRoleList = row
-      this.setRoleVisible =true
+      this.setRoleList = row;
+      this.setRoleVisible = true;
     },
     //提交分配角色的按钮
-    sendSetRole(){
-      setUserRole( this.setRoleList.id,this.Rid).then(res=>{
-         if (res.data.meta.status == 200) {
-              this.$message.success(res.data.meta.msg);
-              //成功后重新获取列表
-              this.getUserList();
-            } else {
-              this.$message.error("分配角色失败");
-            }
-      })
- this.setRoleVisible = false
-    }
+    sendSetRole() {
+      setUserRole(this.setRoleList.id, this.Rid).then((res) => {
+        if (res.data.meta.status == 200) {
+          this.$message.success(res.data.meta.msg);
+          //成功后重新获取列表
+          this.getUserList();
+        } else {
+          this.$message.error("分配角色失败");
+        }
+      });
+      this.setRoleVisible = false;
+    },
   },
   mounted() {
     this.getUserList();

@@ -201,11 +201,43 @@ export const setRights =  (roleId,data) => {
     })
 }
 //===========================商品================================
-//商品分类列表
+//获取商品分类列表
 
 export const categoriesList = (data) => {
     return axios({
         url: '/categories',
+        method: 'get',
+        params:data
+    })
+}
+//删除一个商品分类
+export const DeleteCate =  (Id) => {
+    return  axios({
+        url: `/categories/${Id}`,
+        method: 'delete',
+        
+    })
+}
+//添加商品分类
+export const addCateOne =  (data) => {
+    return  axios({
+        url:'/categories',
+        method: 'post',
+      data:data
+    })
+}
+//编辑商品分类
+export const setCate = (id,data) => {
+    return axios({
+        url: `categories/${id}`,
+        method: "put",
+        data:data
+    })
+}
+//============================商品参数==========================
+export const cateDataList = (id,data) => {
+    return axios({
+        url: `categories/${id}/attributes`,
         method: 'get',
         params:data
     })

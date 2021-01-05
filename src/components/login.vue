@@ -7,7 +7,7 @@
       <!-- //登录表单 -->
       <el-form :model="form" class="login_form" :rules="loginRoler">
         <!-- 账号 -->
-        <el-form-item prop="name">
+        <el-form-item prop="username">
           <el-input
             v-model="form.username"
             prefix-icon="iconfont icon-yonghu"
@@ -44,7 +44,7 @@ export default {
         password: "",
       },
       loginRoler: {
-        name: [
+        username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
           { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
         ],
