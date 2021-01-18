@@ -235,10 +235,38 @@ export const setCate = (id,data) => {
     })
 }
 //============================商品参数==========================
+//参数列表
 export const cateDataList = (id,data) => {
     return axios({
         url: `categories/${id}/attributes`,
         method: 'get',
         params:data
+    })
+}
+//添加动态参数或者静态属性
+export const cateGories = (id,data) => {
+    return axios({
+        url: `categories/${id}/attributes`,
+        method: 'post',
+        data:data
+    })
+}
+
+
+//编辑动态参数或者静态属性
+export const setCategories = (id,attrId,data) => {
+    return axios({
+        url: `categories/${id}/attributes/${attrId}`, 
+        method: "put",
+        data:data
+    })
+}
+
+//删除权限
+export const DeleteCategories =  (Id,attrId) => {
+    return  axios({
+        url: `categories/${Id}/attributes/${attrId}`,  
+        method: 'delete',
+        
     })
 }
