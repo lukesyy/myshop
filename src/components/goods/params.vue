@@ -30,7 +30,7 @@
 
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="动态参数" name="添加参数"
-<<<<<<< HEAD
+<<<<<<< HE
           ><el-button type="primary" round :disabled="isBtn" @click="addShow('many')">{{
             activeName
           }}</el-button>
