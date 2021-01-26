@@ -270,3 +270,39 @@ export const DeleteCategories =  (Id,attrId) => {
         
     })
 }
+//=============================商品列表============================
+//获取商品列表
+export const  getGoodsList = (data)=>{
+
+    return axios({
+        url: "goods",
+        method:"get",
+        params:data
+    })
+}
+
+//添加商品
+
+export const addGoods = (data) => {
+    return axios({
+        url: "goods",
+        method: 'post',
+        data:data
+    })
+}
+//删除商品
+export const DeleteGoods =  (Id) => {
+    return  axios({
+        url: `goods/${Id}`,  
+        method: 'delete',
+        
+    })
+}
+//==========================图片上传========================
+export const upload = (file) => {
+    return axios({
+        url: "upload",
+        method: 'post',
+        data:file
+    })
+}

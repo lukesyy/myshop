@@ -11,6 +11,8 @@ Vue.use(Router)
   const roles=()=> import('../components/power/roles.vue')  
   const cate=()=> import('../components/goods/cate.vue')  
   const params=()=> import('../components/goods/params.vue')  
+  const goods=()=> import('../components/goods/goods.vue')  
+  const add=()=> import('../components/goods/add.vue')  
 
  const router = new Router({
   routes: [
@@ -48,6 +50,12 @@ Vue.use(Router)
         }, {
           path: "params",
           component:params
+        }, {
+          path: "goods",
+          component:goods
+        }, {
+          path: "add",
+          component:add
         },
         {
           path: '',

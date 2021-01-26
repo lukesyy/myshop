@@ -266,6 +266,7 @@ remove(row){
           DeleteCate(row.cat_id).then(res=>{
 
         this.$message.error(res.data.meta.msg);
+           this.params.pagenum= (this.cateList.length)%(this.params.pagesize) == 1?this.params.pagenum-1:this.params.pagenum
        this.getcateList()
       
   })

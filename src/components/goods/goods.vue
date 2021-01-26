@@ -1,12 +1,11 @@
 <template>
-  <div>
-    <!-- 面包屑导航 -->
+    <div>
+  <!-- 面包屑导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
+      <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+      <el-breadcrumb-item>商品列表</el-breadcrumb-item>
     </el-breadcrumb>
-
     <!-- 卡片视图 -->
     <el-card>
       <!-- 搜索和添加 -->
@@ -15,37 +14,35 @@
           <el-input
             placeholder="请输入内容"
             clearable
-            @clear="getUserList"
-            @keyup.enter="getUserList"
+            @clear="getList"
+            @keyup.enter="getList"
             v-model="params.query"
           >
             <el-button
               slot="append"
               icon="el-icon-search"
-              @click="getUserList"
+              @click="getList"
             ></el-button> </el-input
         ></el-col>
         <el-col :span="4"> </el-col>
-        <el-button type="primary" @click="dialogFormVisible = true">
-          添加用户</el-button
+        <el-button type="primary" @click="goAddPage">
+          添加商品</el-button
         >
       </el-row>
       <!-- 用户列表 -->
-      <el-table :data="usersList" border stripe>
+      <el-table :data="goodsList" border stripe>
         <el-table-column type="index" label="#"></el-table-column>
-        <el-table-column label="姓名" prop="username"></el-table-column>
-        <el-table-column label="邮箱" prop="email"></el-table-column>
-        <el-table-column label="电话" prop="mobile"></el-table-column>
-        <el-table-column label="角色" prop="role_name"></el-table-column>
+        <el-table-column label="商品名称" prop="goods_name"  width="950px"></el-table-column>
+        <el-table-column label="商品价格(元)" prop="goods_price"  width="110px"></el-table-column>
+        <el-table-column label="商品重量" prop="goods_weight" width="110px"></el-table-column>
+        <el-table-column label="创建时间" prop="add_time">
+<template slot-scope="scope">
+        {{scope.row.add_time | dataFormat}}
 
-        <el-table-column label="状态" prop="mg_state">
-          <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.mg_state"
-              @change="userState(scope.row)"
-            ></el-switch>
-          </template>
+    </template>
+
         </el-table-column>
+
 
         <el-table-column label="操作" width="190px">
           <template slot-scope="scope">
@@ -64,17 +61,6 @@
               @click="Delete(scope.row)"
               size="mini"
             ></el-button>
-
-            <!-- //分配角色按钮 -->
-
-            <el-tooltip content="分配角色" placement="top" :enterable="false">
-              <el-button
-                type="warning"
-                icon="el-icon-s-tools"
-                @click="setRole(scope.row)"
-                size="mini"
-              ></el-button>
-            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -93,40 +79,7 @@
       </el-pagination>
     </el-card>
 
-    <!-- 添加用户对话框 -->
-    <el-dialog
-      title="添加用户"
-      :visible.sync="dialogFormVisible"
-      @close="addClose"
-    >
-      <el-form :model="addForm" :rules="addFormRules" ref="addFromRef">
-        <el-form-item
-          label="用户名"
-          :label-width="formLabelWidth"
-          prop="username"
-        >
-          <el-input v-model="addForm.username" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item
-          label="密码"
-          :label-width="formLabelWidth"
-          prop="password"
-        >
-          <el-input v-model="addForm.password" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
-          <el-input v-model="addForm.email" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="手机" :label-width="formLabelWidth" prop="mobile">
-          <el-input v-model="addForm.mobile" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <!-- 对话窗底部 -->
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addUser">确 定</el-button>
-      </div>
-    </el-dialog>
+    
 
     <!-- 修改用户对话框 -->
     <el-dialog
@@ -157,54 +110,15 @@
       </div>
     </el-dialog>
 
-    <!-- 分配角色的对话框 -->
-
-    <el-dialog
-      title="分配角色"
-      :visible.sync="setRoleVisible"
-      @close="setRoleClose"
-    >
-      <el-form :model="setRoleList" :rules="addFormRules" ref="setRoleRef">
-        <el-form-item label="用户名:" :label-width="formLabelWidth">
-          <el-input
-            v-model="setRoleList.username"
-            autocomplete="off"
-            disabled
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="当前角色:" :label-width="formLabelWidth">
-          <el-input
-            v-model="setRoleList.role_name"
-            autocomplete="off"
-            disabled
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="分配新角色:" :label-width="formLabelWidth">
-          <el-select v-model="Rid" placeholder="请选择角色">
-            <el-option
-              :label="item.roleName"
-              :value="item.id"
-              v-for="item in getRoleList"
-              :key="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <!-- 对话窗底部 -->
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="setRoleVisible = false">取 消</el-button>
-        <el-button type="primary" @click="sendSetRole">确 定</el-button>
-      </div>
-    </el-dialog>
-  </div>
+    </div>
 </template>
 
 <script>
 import {
-  usersList,
+  getGoodsList,
   setType,
-  addUserList,
-  DeleteUser,
+  addGoods,
+  DeleteGoods,
   getUserOne,
   setUser,
   setUserRole,
@@ -219,7 +133,7 @@ export default {
         pagenum: 1, //当前页数
         pagesize: 2, //每页显示多少行
       },
-      usersList: [], //请求回来的列表数据
+      goodsList: [], //请求回来的列表数据
       total: 0, //总页数
       dialogFormVisible: false, //控制添加弹框的显示与隐藏
       setUserVisible: false, //控制修改弹框的显示与隐藏
@@ -321,27 +235,30 @@ export default {
 
           this.$message.success(res.data.meta.msg);
           //成功后重新获取列表
-          this.getUserList();
+          this.getList();
           this.setUserVisible = false;
         });
       });
     },
-    //删除用户
+    //删除商品
     Delete(row) {
-      this.$confirm(`确定删除用户 ${row.username} 的信息吗?`, "提示", {
+      this.$confirm(`确定删除商品 ${row.goods_name} 吗?`, "提示", {
         confirmButtonText: "删除",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          DeleteUser(row.id).then((res) => {
+          DeleteGoods(row.goods_id).then((res) => {
             if (res.data.meta.status != 200) {
               this.$message.error(res.data.meta.msg);
               return;
             }
             this.$message.success(res.data.meta.msg);
-                this.params.pagenum= (this.usersList.length)%(this.params.pagesize) == 1?this.params.pagenum-1:this.params.pagenum
-            this.getUserList();
+                  this.params.pagenum= (this.goodsList.length)%(this.params.pagesize) == 1?this.params.pagenum-1:this.params.pagenum
+     
+            this.getList();
+  
+       
           });
         })
         .catch(() => {
@@ -355,25 +272,14 @@ export default {
     handleSizeChange(newSize) {
       this.params.pagesize = newSize;
 
-      this.getUserList();
+      this.getList();
     },
     //监听页码值改变
     handleCurrentChange(newPage) {
       this.params.pagenum = newPage;
-      this.getUserList();
+      this.getList();
     },
-    //监听状态改变
-    userState(row) {
-      setType(row.id, row.mg_state).then((res) => {
-        if (res.data.meta.status == 200) {
-          this.$message.success(res.data.meta.msg);
-        } else {
-          this.$message.error("设置状态失败");
-
-          row.mg_state = !row.mg_state;
-        }
-      });
-    },
+  
     //监听添加用户对话框的关闭事件
     addClose() {
       //关闭对话框后把内容清空
@@ -390,23 +296,28 @@ export default {
       this.Rid = null;
     },
     //发送获取用户列表的请求
-    getUserList() {
-      usersList(this.params).then((res) => {
-        this.usersList = res.data.data.users;
+   getList() {
+      getGoodsList(this.params).then((res) => {
+        this.goodsList = res.data.data.goods;
         this.total = res.data.data.total;
+        console.log( this.goodsList);
       });
     },
-    //添加用户提交
-    addUser() {
+    //跳转到商品添加的页面
+    goAddPage(){
+this.$router.push("/index/add")
+    },
+    //添加用户提交 
+    addGood() {
       //验证整个表单
       this.$refs.addFromRef.validate((valid) => {
         //valid是一个 布尔值
         if (valid) {
-          addUserList(this.addForm).then((res) => {
+          addGoods(this.addForm).then((res) => {
             if (res.data.meta.status == 201) {
               this.$message.success(res.data.meta.msg);
               //成功后重新获取列表
-              this.getUserList();
+              this.getList();
             } else {
               this.$message.error("添加失败");
             }
@@ -418,40 +329,11 @@ export default {
         }
       });
     },
-    //打开分配角色的按钮
-    setRole(row) {
-      rolesList().then((res) => {
-        if (res.data.meta.status == 200) {
-          this.$message.success(res.data.meta.msg);
+ 
 
-          this.getRoleList = res.data.data;
-
-          //成功后重新获取列表
-          this.getUserList();
-        } else {
-          this.$message.error("获取角色列表失败");
-        }
-      });
-
-      this.setRoleList = row;
-      this.setRoleVisible = true;
-    },
-    //提交分配角色的按钮
-    sendSetRole() {
-      setUserRole(this.setRoleList.id, this.Rid).then((res) => {
-        if (res.data.meta.status == 200) {
-          this.$message.success(res.data.meta.msg);
-          //成功后重新获取列表
-          this.getUserList();
-        } else {
-          this.$message.error("分配角色失败");
-        }
-      });
-      this.setRoleVisible = false;
-    },
   },
   mounted() {
-    this.getUserList();
+    this.getList();
   },
 };
 </script>
