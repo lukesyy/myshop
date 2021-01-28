@@ -244,15 +244,18 @@ if(item.attr_value==val){
       this.addForm.attrs=newobj
   
 addGoods(this.addForm).then(res=>{
-  console.log(res.data);
+   newobj = []
   if (res.data.meta.status != 201) {
             this.$message.error("添加失败");
+
             return;
           }
-})  
-
           this.$message.success(res.data.meta.msg);
           this.$router.push("/index/goods")
+         
+})  
+
+          
 })
     },
     //图片上传成功后的回调
